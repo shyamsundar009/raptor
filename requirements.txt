@@ -16,3 +16,5 @@ unstructured
 faiss-cpu
 python-pptx
 streamlit-authenticator
+docx2txt
+rank_bm25

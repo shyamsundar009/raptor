@@ -11,10 +11,7 @@ from yaml.loader import SafeLoader
 def meta(s):
     f=[]
     for i in s:
-        d=""
-        for i,y in i.metadata.items():
-            d=d+f"{i} : {y} \n"
-        f.append(d)
+        f.append(i[:100])
     return f
 
 
@@ -107,7 +104,14 @@ if st.session_state["authentication_status"]:
                             st.session_state.pages = pickle.load(f)
                     with st.spinner("VectorDatabse is Loading....."):
                         st.session_state.db =  FAISS.load_local(vectorstore_name, OpenAIEmbeddings(),allow_dangerous_deserialization=True)
-                    st.success("VectorDatabse is created successfully in the Local_vectorstore folder")
+                    st.success(f"Chunked document size is {len(st.session_state.pages)}\nVectorDatabse is successfully loaded from the Local_vectorstore folder {vectorstore_name}")
+            elif vectorstore_name=="db_002":
+                with st.sidebar:
+                    with open("pages2.pkl", "rb") as f:
+                        st.session_state.pages = pickle.load(f)
+                    with st.spinner("VectorDatabse is Loading....."):
+                        st.session_state.db =  FAISS.load_local(vectorstore_name, OpenAIEmbeddings(),allow_dangerous_deserialization=True)
+                    st.success(f"Chunked document size is {len(st.session_state.pages)}\nVectorDatabse is successfully loaded from the Local_vectorstore folder {vectorstore_name}")
             else:
                 st.warning(f"There is no vectorstore with name {vectorstore_name} in the Current folder")
         else:

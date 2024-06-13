@@ -214,7 +214,7 @@ embd = OpenAIEmbeddings()
 
 from langchain_openai import ChatOpenAI
 
-model = ChatOpenAI(temperature=0, model="gpt-4-1106-preview")
+summary_model_genration = ChatOpenAI(temperature=0, model="gpt-4o")
 
 
 RANDOM_SEED = 224  # Fixed seed for reproducibility
@@ -438,7 +438,7 @@ def fmt_txt(df: pd.DataFrame) -> str:
     Returns:
     - A single string where all text documents are joined by a specific delimiter.
     """
-    unique_txt = df["text"].tolist()
+    unique_txt = list(set(df["text"].tolist()))
     return "--- --- \n --- --- ".join(unique_txt)
 
 
@@ -493,7 +493,7 @@ def embed_cluster_summarize_texts(
     {context}
     """
     prompt = ChatPromptTemplate.from_template(template)
-    chain = prompt | model | StrOutputParser()
+    chain = prompt | summary_model_genration | StrOutputParser()
 
     # Format text within each cluster for summarization
     summaries = []
