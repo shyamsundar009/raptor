@@ -8,11 +8,22 @@ import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
+from langchain.docstore.document import Document
+
+def convert_text_to_doc(all_texts):    
+    document =  []
+
+    for item in range(len(all_texts)):
+        page = Document(page_content=all_texts[item])
+        document.append(page)
+    return document
+
 def meta(s):
     f=[]
     for i in s:
         f.append(i[:100])
     return f
+
 
 
 with open('credentials.yaml') as file:
@@ -104,14 +115,15 @@ if st.session_state["authentication_status"]:
                             st.session_state.pages = pickle.load(f)
                     with st.spinner("VectorDatabse is Loading....."):
                         st.session_state.db =  FAISS.load_local(vectorstore_name, OpenAIEmbeddings(),allow_dangerous_deserialization=True)
-                    st.success(f"Chunked document size is {len(st.session_state.pages)}\nVectorDatabse is successfully loaded from the Local_vectorstore folder {vectorstore_name}")
+                    st.success(f"Number of chunks is {len(st.session_state.pages)}\nVectorDatabse is successfully loaded from the Local_vectorstore folder {vectorstore_name}")
             elif vectorstore_name=="db_002":
                 with st.sidebar:
                     with open("pages2.pkl", "rb") as f:
                         st.session_state.pages = pickle.load(f)
+                    st.session_state.pages=convert_text_to_doc(st.session_state.pages)                        
                     with st.spinner("VectorDatabse is Loading....."):
                         st.session_state.db =  FAISS.load_local(vectorstore_name, OpenAIEmbeddings(),allow_dangerous_deserialization=True)
-                    st.success(f"Chunked document size is {len(st.session_state.pages)}\nVectorDatabse is successfully loaded from the Local_vectorstore folder {vectorstore_name}")
+                    st.success(f"Number of chunks is {len(st.session_state.pages)}\nVectorDatabse is successfully loaded from the Local_vectorstore folder {vectorstore_name}")
             else:
                 st.warning(f"There is no vectorstore with name {vectorstore_name} in the Current folder")
         else:
@@ -165,15 +177,15 @@ if st.session_state["authentication_status"]:
         with st.spinner(f"""Creative Query from the original question \n\n{'\n'.join(questions[1:])} \n\n Keywords from the original question \n\n{keywords}\n"""):
             answer_dict=main(prompt,chunks=st.session_state.pages,db=st.session_state.db)
             answer=answer_dict["response"]
-            metadata=[]
-            if "I don't" in answer:
-                metadata=["No relevant Documents correspond to the question. Please try with different query."]
-            else:
-                metadata=meta(answer_dict["context"])
+            # metadata=[]
+            # if "I don't" in answer:
+            #     metadata=["No relevant Documents correspond to the question. Please try with different query."]
+            # else:
+            #     metadata=meta(answer_dict["context"])
         response = f"{answer}"
         # Display assistant response in chat message container
         with st.chat_message("assistant"):
-            st.markdown(f"{response}\n\n\n Metadata: \n\n{'\n\n'.join(metadata)}")
+            st.markdown(f"{response}")
         # Add assistant response to chat history
         st.session_state.messages.append({"role": "assistant", "content": response})    
 
