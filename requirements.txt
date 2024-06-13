@@ -2,3 +2,17 @@ langchain
 openai
 python-dotenv
 ipykernel
+umap-learn 
+scikit-learn 
+langchain_community 
+tiktoken 
+langchain-openai 
+langchainhub 
+chromadb 
+azure-storage-blob
+boto3
+pypdf
+unstructured
+faiss-cpu
+python-pptx
+streamlit-authenticator
