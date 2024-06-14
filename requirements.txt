@@ -18,3 +18,4 @@ python-pptx
 streamlit-authenticator
 docx2txt
 rank_bm25
+sentence-transformers
