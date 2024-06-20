@@ -56,7 +56,8 @@ if st.session_state["authentication_status"]:
     # st.session_state
     # if st.session_state['Logout']:
         # st.session_state.messages = []
-    st.title("RAG with different source")
+
+st.title("RAG with different source")
 
 # Using object notation
     add_selectbox = st.sidebar.selectbox(

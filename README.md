@@ -29,6 +29,8 @@ Welcome to the GitHub repository for our custom RAG (Retrieval-Augmented Generat
 5. **Re-ranking**: A cross-encoder reranker is employed to refine the selection and choose the top 4 documents.
 6. **Summary Generation**: These top documents are then used as the context for the LLM, which generates a comprehensive and coherent summary.
 
+See the Custom RAG implementation without RAPTOR at https://github.com/Shyam-Sundar-7/RAG-with-different-source
+
 ## Getting Started
 
 Follow these steps to set up and run the application:
@@ -54,7 +56,7 @@ Follow these steps to set up and run the application:
 
 - **db_001**: Contains chunks from the local storage.
 - **db_002**: Contains RAPTOR chunks from the local storage.
-
+- **db_003**: Contains Optimised RAPTOR chunks from the local storage.
 ## Streamlit Demo
 
 To run the Streamlit interface:
